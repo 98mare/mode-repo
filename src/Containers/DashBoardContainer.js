@@ -6,26 +6,50 @@ import imgOne from '../assets/images/logobig.png'
 import { Col, Row } from 'antd'
 import { quotes } from '../Data/quotesData'
 import bkg from '../assets/images/svg.png'
-import sun from '../assets/images/sun.png'
+import day from '../assets/images/day.jpg'
+import night from '../assets/images/night.jpg'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { useMemo } from 'react'
 
 
 const DashBoardContainer = () => {
   const data = MenuRoute;
   const token = JSON.parse(sessionStorage.getItem('token'));
   const [randomElement, setrandomElement] = useState(quotes[Math.floor(Math.random() * quotes.length)])
+  // const cardImgBkg = useMemo(() => day);
 
   const [date, setDate] = useState(new Date());
+  const [cardBkg, setcardBkg] = useState();
+  const daysNames=['sunday', 'monday', 'tuesday', 'wedesday', 'thirsday', 'friday', 'saturday'];
+  const monthsNames =[
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'jun',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december'
+  ]
 
   useEffect(() => {
     var timerID = setInterval( () => tick(), 1000 );
     return function cleanup() {
         clearInterval(timerID);
       };
+
+
    });
    function tick() {
     setDate(new Date());
+    const temp = date.getHours;
+    temp >= 18 || temp < 6 ? setcardBkg('night') : setcardBkg('day');
+
    }
   
 
@@ -70,14 +94,11 @@ const DashBoardContainer = () => {
           </Row>
         </Col>
         <Col sm={24} md={8} xs={24} lg={6}>
-          <div className="maiTopContainer dContainer">
-            <div className="img">
-              <img src={sun} alt="" />
-            </div>
-            <div className="detail">
-              <span>{date.getDay()}</span>
-              <h2>{date.toLocaleTimeString()}</h2>
-              <p>{date.getFullYear()} {date.getMonth()} {date.getDate()} </p>
+          <div className={`dContainer ${cardBkg}`}>
+            <div className="detail ">
+              <span>{daysNames[date.getDay()]}</span>
+              <h2>{date.getHours()} : {date.getMinutes()}</h2>
+              <p>{date.getFullYear()} {monthsNames[date.getMonth()]} {date.getDate()} </p>
             </div>
 
 
@@ -154,6 +175,7 @@ const DashbordContainer = styled.div`
   }
 }
 
+
 .botContainer{
   display: flex;
   flex-wrap: wrap;
@@ -210,6 +232,8 @@ const DashbordContainer = styled.div`
     }
    
   }
+ 
+  
   .dContainer{
     height: 255px;
     display: flex;
@@ -217,32 +241,35 @@ const DashbordContainer = styled.div`
     align-items: center;
     flex-direction: column;
     position: relative;
+    background-size: cover;
+    background-position:center;
+    border-radius: 10px;
+    box-shadow:  0 0 0 2px rgba(123, 124, 126, 0.123);
     
-    .img{
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      z-index: 10;
-      img{
-      width: 140px;
     }
-    }
+    
+  }
+  .day{
+    background-image: url(${day});
     .detail{
       position: absolute;
       z-index: 20;
-      background: rgba( 255, 255, 255, 0.15 );
+      background: rgba( 255, 255, 255, 0.1 );
       backdrop-filter: blur( 1px );
       -webkit-backdrop-filter: blur( 1px );
-      border: 1px solid rgba( 255, 255, 255, 0.18 );
-      top: 50px;
+      top: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      padding: 10px;
+      bottom:0 ;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      border-radius: 10px;
       h2{
         font-size: 35px;
         font-weight: 600;
-        color: var(--primary);
+        h2: var(--primary)
         margin-bottom: 0px;
         padding: 0;
       }
@@ -250,6 +277,45 @@ const DashbordContainer = styled.div`
         font-size: 30px;
         text-transform: capitalize;
         color: #232325;
+        margin: 0px;
+        padding: 0;
+      }
+      p{
+        font-size: 16px;
+        color: rgb(233,91,41);
+        margin: 0px;
+        padding: 0;
+      }
+    }
+  }
+  .night{
+    background-image: url(${night});
+    .detail{
+      position: absolute;
+      z-index: 20;
+      background: rgba( 255, 255, 255, 0.1 );
+      backdrop-filter: blur( 1px );
+      -webkit-backdrop-filter: blur( 1px );
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom:0 ;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      border-radius: 10px;
+      h2{
+        font-size: 35px;
+        font-weight: 600;
+        color: #fefefe;
+        margin-bottom: 0px;
+        padding: 0;
+      }
+      span{
+        font-size: 30px;
+        text-transform: capitalize;
+        color: #c8c8dd;
         margin: 0px;
         padding: 0;
       }
